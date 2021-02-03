@@ -27,13 +27,13 @@ namespace UserManagement.Api
             return services;
         }
 
-        public static IServiceCollection AddPostgresHealthCheck(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddHealthChecks()
-                .AddNpgSql(GetConnectionString(configuration));
+        //public static IServiceCollection AddPostgresHealthCheck(this IServiceCollection services, IConfiguration configuration)
+        //{
+        //    services.AddHealthChecks()
+        //        .AddNpgSql(GetConnectionString(configuration));
 
-            return services;
-        }
+        //    return services;
+        //}
 
         public static IServiceCollection AddFluentValidation(this IServiceCollection services)
         {

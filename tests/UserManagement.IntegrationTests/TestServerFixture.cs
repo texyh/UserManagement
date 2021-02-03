@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -83,7 +82,7 @@ namespace UserManagement.IntegrationTests
         {
             if(server == null)
             {
-                throw new OperationException("the test server is null, please call \"CreateTestEnvironment\" before using this Fixture");
+                throw new InvalidOperationException("the test server is null, please call \"CreateTestEnvironment\" before using this Fixture");
             }
         }
     }

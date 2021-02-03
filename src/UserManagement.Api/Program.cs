@@ -39,7 +39,7 @@ namespace UserManagement.Api
                 })
                 .ConfigureServices(services => 
                 {
-                    services.AddPostgresHealthCheck(BuildConfiguration());
+                    //services.AddPostgresHealthCheck(BuildConfiguration());
                     services.AddMartenDB(BuildConfiguration());
                 }).UseSerilog(logger: Log.Logger);
 
