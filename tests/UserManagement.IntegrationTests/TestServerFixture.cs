@@ -31,8 +31,8 @@ namespace UserManagement.IntegrationTests
                 {
                     new KeyValuePair<string, string>("POSTGRES_USERNAME", "root"),
                     new KeyValuePair<string, string>("POSTGRES_PASSWORD", "Pass@word1"),
-                    //new KeyValuePair<string, string>("POSTGRES_HOST", "localhost"),
-                    new KeyValuePair<string, string>("POSTGRES_HOST", "192.168.99.100"),
+                    new KeyValuePair<string, string>("POSTGRES_HOST", "localhost"),
+                    //new KeyValuePair<string, string>("POSTGRES_HOST", "192.168.99.100"),
                     new KeyValuePair<string, string>("POSTGRES_DB_NAME", "UserManagementDB"),
                     new KeyValuePair<string, string>("POSTGRES_PORT", "5432"),
                 }
