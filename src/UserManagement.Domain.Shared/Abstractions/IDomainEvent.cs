@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UserManagement.Domain.Abstractions
+namespace UserManagement.Domain.Shared.Abstractions
 {
     public interface IDomainEvent
     {

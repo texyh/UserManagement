@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using UserManagement.Domain.Abstractions;
+using System.Text.Json.Serialization;
+using UserManagement.Domain.Shared.Abstractions;
 using UserManagement.Domain.User.Events;
 using Volo.Abp;
 
@@ -28,12 +27,13 @@ namespace UserManagement.Domain.User
 
         }
 
+        [JsonConstructor]
         public User(
             Guid id,
             string firstName,
             string lastName,
             int age,
-            string email,
+            string emailAddress,
             string mobileNumber,
             string city,
             string password)
@@ -42,7 +42,7 @@ namespace UserManagement.Domain.User
             Check.NotNullOrEmpty(firstName, nameof(firstName));
             Check.NotNullOrEmpty(lastName, nameof(lastName));
             Check.NotNull(age, nameof(age));
-            Check.NotNullOrEmpty(email, nameof(email));
+            Check.NotNullOrEmpty(emailAddress, nameof(emailAddress));
             Check.NotNullOrEmpty(mobileNumber, nameof(mobileNumber));
             Check.NotNullOrEmpty(city, nameof(city));
             Check.NotNullOrEmpty(password, nameof(password));
@@ -53,7 +53,7 @@ namespace UserManagement.Domain.User
                 FirstName = firstName,
                 Age = age,
                 City = city,
-                EmailAddress = email,
+                EmailAddress = emailAddress,
                 LastName = lastName,
                 MobileNumber = mobileNumber,
                 Password = password

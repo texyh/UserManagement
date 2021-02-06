@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using UserManagement.Application.UseCases.UserRegistration;
-using UserManagement.Domain.Abstractions;
+using UserManagement.Domain.Shared.Abstractions;
 using UserManagement.Domain.User;
 using Xbehave;
 using Xunit;
@@ -29,10 +29,13 @@ namespace UserManagement.IntegrationTests.AcceptanceTests
         public void User_Registration(UserRegistrationRequest request, UserRegistrationResponse response)
         {
             "Given a user registraion request"
-                .x(request => GivenUserRequest());
+                .x(() => request = GivenUserRequest());
 
             "When i make a user registration request"
-                .x(response => MakeUserRegistrationRequest(request));
+                .x(async () => response = await MakeUserRegistrationRequest(request));
+
+            "Then ensure the response is not null"
+                .x(() => AssertResponseIsNotNull(response));
 
             "Then ensure that the user is persisted"
                 .x(() => AssertNewUserIsPersisted(response));
@@ -41,15 +44,20 @@ namespace UserManagement.IntegrationTests.AcceptanceTests
                 .x(() => AssertUserRegisteredEventWasPublished());
         }
 
-        private void AssertUserRegisteredEventWasPublished()
+        private void AssertResponseIsNotNull(UserRegistrationResponse response)
         {
-            throw new NotImplementedException();
+            Assert.NotNull(response);
         }
 
-        private void AssertNewUserIsPersisted(UserRegistrationResponse response)
+        private void AssertUserRegisteredEventWasPublished()
+        {
+            //throw new NotImplementedException();
+        }
+
+        private async Task AssertNewUserIsPersisted(UserRegistrationResponse response)
         {
             var repository = _fixture.GetService<IAggregateStore<User>>();
-            var user = repository.Load(response.Id);
+            var user = await repository.Load(response.Id);
 
             Assert.NotNull(user);
         }

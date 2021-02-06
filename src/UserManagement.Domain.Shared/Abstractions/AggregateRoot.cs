@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace UserManagement.Domain.Abstractions
+namespace UserManagement.Domain.Shared.Abstractions
 {
     public abstract class AggregateRoot
     {

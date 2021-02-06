@@ -14,6 +14,20 @@
 
         public string City { get; set; }
 
-        public string PassWord { get; set; }
+        public string Password { get; set; }
+
+        public UserRegistrationCommand ToCommand()
+        {
+            return new UserRegistrationCommand
+            {
+                FirstName = FirstName,
+                LastName = LastName,
+                EmailAddress = EmailAddress,
+                MobileNumber = MobileNumber,
+                City = City,
+                Password = Password,
+                Age = Age
+            };
+        }
     }
 }

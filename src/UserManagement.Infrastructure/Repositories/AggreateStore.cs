@@ -1,9 +1,9 @@
 ﻿using Marten;
-using UserManagement.Domain.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using UserManagement.Domain.Shared.Abstractions;
 
 namespace UserManagement.Infrastructure.Repositories
 {

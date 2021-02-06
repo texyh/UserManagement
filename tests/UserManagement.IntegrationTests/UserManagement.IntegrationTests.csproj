@@ -29,6 +29,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\UserManagement.Api\UserManagement.Api.csproj" />
     <ProjectReference Include="..\..\src\UserManagement.Application\UserManagement.Application.csproj" />
+    <ProjectReference Include="..\..\src\UserManagement.Domain.Shared\UserManagement.Domain.Shared.csproj" />
   </ItemGroup>
 
 </Project>

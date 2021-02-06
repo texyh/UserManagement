@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Marten;
+using Marten.Services.Events;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,9 +19,9 @@ namespace UserManagement.Api
             {
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Payment Gateway Api",
+                    Title = "User management api",
                     Version = "v1",
-                    Description = "This is an api that allow merchants process and manage payments"
+                    Description = "A simple api for managing users"
                 });
             });
 
@@ -57,6 +58,7 @@ namespace UserManagement.Api
             var connectionString = GetConnectionString(configuration);
             var options = new StoreOptions();
             options.Connection(connectionString);
+            options.Events.UseAggregatorLookup(AggregationLookupStrategy.UsePrivateApply);
             //options.Events.InlineProjections.AggregateStreamsWith<>();
             services.AddMarten(options);
 

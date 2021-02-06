@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using UserManagement.Domain.Abstractions;
+using UserManagement.Domain.Shared.Abstractions;
 
 namespace UserManagement.Domain.User.Events
 {
