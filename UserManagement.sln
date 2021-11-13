@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserManagement.UnitTests", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserManagement.Domain.Shared", "src\UserManagement.Domain.Shared\UserManagement.Domain.Shared.csproj", "{8EFF5113-5F7C-4FCC-AA5E-539177CF6FCF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserManagement.DatabaseMigrator", "src\ConsoleApp2\UserManagement.DatabaseMigrator.csproj", "{31FC31CE-8C81-4688-901B-3CF1F4C28D8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserManagement.DatabaseMigrator", "src\UserManagement.DatabaseMigrator\UserManagement.DatabaseMigrator.csproj", "{31FC31CE-8C81-4688-901B-3CF1F4C28D8A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
