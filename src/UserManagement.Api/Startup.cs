@@ -7,6 +7,9 @@ using ILogger = Serilog.ILogger;
 using UserManagement.Api.Middleware;
 using MediatR;
 using UserManagement.Application.Abstractions.Commands;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using UserManagement.Domain.Shared.Abstractions;
+using UserManagement.Infrastructure.Repositories;
 
 namespace UserManagement.Api
 {
@@ -30,6 +33,7 @@ namespace UserManagement.Api
             services.AddMediatR(typeof(Startup), typeof(ICommand))
                     .AddCommandHandlerDecorators();
 
+            services.TryAddScoped(typeof(IAggregateStore<>), typeof(AggreateStore<>));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment environment, IServiceProvider serviceProvider)

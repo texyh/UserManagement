@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Marten;
+using Marten.Services.Events;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,22 +19,22 @@ namespace UserManagement.Api
             {
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Payment Gateway Api",
+                    Title = "User management api",
                     Version = "v1",
-                    Description = "This is an api that allow merchants process and manage payments"
+                    Description = "A simple api for managing users"
                 });
             });
 
             return services;
         }
 
-        public static IServiceCollection AddPostgresHealthCheck(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddHealthChecks()
-                .AddNpgSql(GetConnectionString(configuration));
+        //public static IServiceCollection AddPostgresHealthCheck(this IServiceCollection services, IConfiguration configuration)
+        //{
+        //    services.AddHealthChecks()
+        //        .AddNpgSql(GetConnectionString(configuration));
 
-            return services;
-        }
+        //    return services;
+        //}
 
         public static IServiceCollection AddFluentValidation(this IServiceCollection services)
         {
@@ -57,6 +58,7 @@ namespace UserManagement.Api
             var connectionString = GetConnectionString(configuration);
             var options = new StoreOptions();
             options.Connection(connectionString);
+            options.Events.UseAggregatorLookup(AggregationLookupStrategy.UsePrivateApply);
             //options.Events.InlineProjections.AggregateStreamsWith<>();
             services.AddMarten(options);
 

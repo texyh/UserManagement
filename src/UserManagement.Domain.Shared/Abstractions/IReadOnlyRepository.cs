@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UserManagement.Domain.Abstractions
+namespace UserManagement.Domain.Shared.Abstractions
 {
-    public interface IReadOnlyRepository<T> 
+    public interface IReadOnlyRepository<T>
     {
         Task<T> FindBy(Guid id);
     }

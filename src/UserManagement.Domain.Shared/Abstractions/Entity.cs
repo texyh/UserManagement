@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace UserManagement.Domain.Abstractions
+namespace UserManagement.Domain.Shared.Abstractions
 {
     public class Entity<T> : IEquatable<Entity<T>>
     {

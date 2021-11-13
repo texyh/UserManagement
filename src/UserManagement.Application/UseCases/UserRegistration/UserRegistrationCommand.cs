@@ -19,6 +19,6 @@ namespace UserManagement.Application.UseCases.UserRegistration
 
         public string City { get; set; }
 
-        public string PassWord { get; set; }
+        public string Password { get; set; }
     }
 }

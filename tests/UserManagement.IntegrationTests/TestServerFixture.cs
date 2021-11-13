@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -34,7 +33,7 @@ namespace UserManagement.IntegrationTests
                     new KeyValuePair<string, string>("POSTGRES_PASSWORD", "Pass@word1"),
                     new KeyValuePair<string, string>("POSTGRES_HOST", "localhost"),
                     //new KeyValuePair<string, string>("POSTGRES_HOST", "192.168.99.100"),
-                    new KeyValuePair<string, string>("POSTGRES_DB_NAME", "paymanetGatewayDb"),
+                    new KeyValuePair<string, string>("POSTGRES_DB_NAME", "UserManagementDB"),
                     new KeyValuePair<string, string>("POSTGRES_PORT", "5432"),
                 }
             );
@@ -45,7 +44,7 @@ namespace UserManagement.IntegrationTests
                 .ConfigureServices(services =>
                 {
                     addTestCases(services);
-                    //services.AddMartenDB(configuration);
+                    services.AddMartenDB(configuration);
                 }).UseSerilog(Log.Logger));
 
             _testServer =  server;
@@ -65,8 +64,8 @@ namespace UserManagement.IntegrationTests
             var httpClient = _testServer.CreateClient();
             var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
             var httpResponse = await httpClient.PostAsync(uri, content, cancellationToken);
-            
-            return JsonConvert.DeserializeObject<TResponse>(await httpResponse.Content.ReadAsStringAsync());
+            var result = await httpResponse.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<TResponse>(result);
         }
 
         public async Task<TResponse> GetAsync<TResponse>(string uri, CancellationToken cancellationToken)
@@ -83,7 +82,7 @@ namespace UserManagement.IntegrationTests
         {
             if(server == null)
             {
-                throw new OperationException("the test server is null, please call \"CreateTestEnvironment\" before using this Fixture");
+                throw new InvalidOperationException("the test server is null, please call \"CreateTestEnvironment\" before using this Fixture");
             }
         }
     }
