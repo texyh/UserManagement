@@ -55,18 +55,7 @@ jobs:
       buildVersion: $[ dependencies.CalculateBuildVersion.outputs['setVersion.buildVersion'] ]
       repositoryName: 'user-management'
     steps:
-    - task: Docker@2
-      displayName: Build Docker Image
-      inputs:
-        command: build
-        repository: $(repositoryName)
-        dockerfile: $(dockerfilePath)
-        buildContext: $(Build.SourcesDirectory)
-        containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(buildVersion)
-        arguments: -t $(repositoryName)
-
+  
     - script: dotnet test tests/UserManagement.UnitTests 
       displayName: Run Unit Tests
 
@@ -98,4 +87,28 @@ jobs:
         dockerComposeFile: $(dockerComposePath)
         action: 'Run a Docker Compose command'
         dockerComposeCommand: 'down'
+
+    - task: Docker@2
+      displayName: Build Docker Image
+      inputs:
+        command: build
+        repository: $(repositoryName)
+        dockerfile: $(dockerfilePath)
+        buildContext: $(Build.SourcesDirectory)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(buildVersion)
+        arguments: -t $(repositoryName)
+
+    - task: Docker@2
+      displayName: Push image to container registry
+      inputs:
+        command: push
+        repository: $(repositoryName)
+        dockerfile: $(dockerfilePath)
+        buildContext: $(Build.SourcesDirectory)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(buildVersion)
+      condition: eq(variables['Build.SourceBranch'], 'refs/heads/main') 
 
