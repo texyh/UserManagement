@@ -8,6 +8,7 @@ variables:
   dockerRegistryServiceConnection: 'dockerRegistryServiceConnection'
   registryName: 'texyh'
   chartPath: '$(Build.SourcesDirectory)/cicd/chart'
+  gitHubServiceConnection: 'texy-devops'
 
 jobs:
   - job: CalculateBuildVersion
@@ -148,4 +149,25 @@ jobs:
           az acr helm repo add
           az acr helm push $(Build.ArtifactStagingDirectory)/$(repositoryName)-$(buildVersion).tgz --force
       condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+
+
+  - job: Release
+    dependsOn: [ CalculateBuildVersion, BuildApi ]
+    variables:
+      buildVersion: $[ dependencies.CalculateBuildVersion.outputs['setVersion.buildVersion'] ]
+      isDraft: ${{ ne(variables['Build.SourceBranch'], 'refs/heads/main') }}
+    steps:
+    - task: GitHubRelease@1
+      displayName: Tag GitHub repository
+      inputs:
+        gitHubConnection: $(gitHubServiceConnection)
+        repositoryName: $(Build.Repository.Name)
+        action: 'create'
+        target: $(Build.SourceVersion)
+        tagSource: 'userSpecifiedTag'
+        tag: $(buildVersion)
+        changeLogCompareToRelease: 'lastFullRelease'
+        changeLogType: 'commitBased'
+        isDraft: $(isDraft)
+        assets: 
 
