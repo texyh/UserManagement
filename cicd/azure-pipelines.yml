@@ -131,7 +131,7 @@ jobs:
     - task: HelmDeploy@0
       displayName: Pack the chart
       inputs:
-        save: false
+        save: true
         command: 'package'
         updateDependency: true
         chartPath: $(chartPath)
