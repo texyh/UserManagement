@@ -64,17 +64,17 @@ namespace UserManagement.Api
 
             return services;
         }
-
+        
         private static string GetConnectionString(IConfiguration configuration)
         {
             var connectionStringBuilder = new NpgsqlConnectionStringBuilder
             {
-                Host = configuration.GetValue<string>("POSTGRES_HOST"),
+                Host = configuration.GetValue<string>("POSTGRES_HOST", "ec2-23-21-186-85.compute-1.amazonaws.com"),
                 Port = int.Parse(configuration.GetValue<string>("POSTGRES_PORT", "5432")),
                 SslMode = SslMode.Prefer,
-                Username = configuration.GetValue<string>("POSTGRES_USERNAME"),
-                Password = configuration.GetValue<string>("POSTGRES_PASSWORD"),
-                Database = configuration.GetValue<string>("POSTGRES_DB_NAME"),
+                Username = configuration.GetValue<string>("POSTGRES_USERNAME", "fhzmnoqgvnyhyf"),
+                Password = configuration.GetValue<string>("POSTGRES_PASSWORD", "924481d786611181e088becf789451da49ff11cd98695bd78d12358c9ae2ab52"),
+                Database = configuration.GetValue<string>("POSTGRES_DB_NAME", "d7b8j75lpk5l8e"),
                 TrustServerCertificate = true
             };
 
