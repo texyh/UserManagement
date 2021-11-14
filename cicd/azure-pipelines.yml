@@ -12,7 +12,7 @@ jobs:
   - job: CalculateBuildVersion
     displayName: Calculate Build Version
     pool:
-      vmImage: $(vmImageName)
+      vmImage: $(vmImage)
     steps:
     - task: gitversion/setup@0
       displayName: Install GitVersion
