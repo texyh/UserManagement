@@ -28,7 +28,7 @@ jobs:
         echo $(GitVersion.SemVer)
       displayName: 'Print Version'
       condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
-      
+
     - script: echo '##vso[task.setvariable variable=buildVersion]$(GitVersion.SemVer)'
       displayName: "Set the build Version as SemVer"
       condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
@@ -52,7 +52,7 @@ jobs:
     pool:
       vmImage: $(vmImage)
     variables:
-      buildVersion: $[ dependencies.CalculateVersion.outputs['setVersion.buildVersion'] ]
+      buildVersion: $[ dependencies.CalculateBuildVersion.outputs['setVersion.buildVersion'] ]
       repositoryName: 'user-management'
     steps:
     - task: Docker@2
