@@ -150,9 +150,10 @@ jobs:
           az acr helm push $(Build.ArtifactStagingDirectory)/$(repositoryName)-$(buildVersion).tgz --force
       condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
 
-
   - job: Release
     dependsOn: [ CalculateBuildVersion, BuildApi ]
+    pool:
+      vmImage: $(vmImage)
     variables:
       buildVersion: $[ dependencies.CalculateBuildVersion.outputs['setVersion.buildVersion'] ]
       isDraft: ${{ ne(variables['Build.SourceBranch'], 'refs/heads/main') }}
