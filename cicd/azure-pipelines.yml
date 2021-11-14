@@ -6,7 +6,7 @@ variables:
   dockerfilePath: '$(Build.SourcesDirectory)/docker/Dockerfile'
   dockerComposePath: '$(Build.SourcesDirectory)/docker/docker-compose.yml'
   dockerRegistryServiceConnection: 'dockerRegistryServiceConnection'
-  registryName: 'texyh'
+  registryName: 'texypee'
   chartPath: '$(Build.SourcesDirectory)/cicd/chart'
 
 jobs:
@@ -144,7 +144,7 @@ jobs:
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
-          az configure --defaults acr=texyh
+          az configure --defaults acr=texypee
           az acr helm repo add
           az acr helm push $(Build.ArtifactStagingDirectory)/$(repositoryName)-$(buildVersion).tgz --force
       condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
