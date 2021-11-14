@@ -4,7 +4,7 @@
     "UserManagement.DatabaseMigrator": {
       "commandName": "Project",
       "environmentVariables": {
-        "POSTGRES_HOST": "192.168.99.100",
+        "POSTGRES_HOST": "localhost",
         "POSTGRES_PORT": "5432",
         "POSTGRES_PASSWORD": "Pass@word1",
         "ASPNETCORE_ENVIRONMENT": "Development",

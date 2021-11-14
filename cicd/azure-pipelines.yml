@@ -5,21 +5,57 @@ variables:
   vmImage: 'ubuntu-latest'
   dockerfilePath: '$(Build.SourcesDirectory)/docker/Dockerfile'
   dockerComposePath: '$(Build.SourcesDirectory)/docker/docker-compose.yml'
+  dockerRegistryServiceConnection: 'dockerRegistryServiceConnection'
+  registryName: 'texyh'
 
 jobs:
+  - job: CalculateBuildVersion
+    displayName: Calculate Build Version
+    pool:
+      vmImage: $(vmImage)
+    steps:
+    - task: gitversion/setup@0
+      displayName: Install GitVersion
+      inputs:
+        versionSpec: '5.x'
+      condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+
+    - task: gitversion/execute@0
+      displayName: Determine Version
+      condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+
+    - script: |
+        echo $(GitVersion.SemVer)
+      displayName: 'Print Version'
+      condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+
+    - script: echo '##vso[task.setvariable variable=buildVersion]$(GitVersion.SemVer)'
+      displayName: "Set the build Version as SemVer"
+      condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+
+    - script: echo '##vso[task.setvariable variable=buildVersion]PR-$(System.PullRequest.PullRequestNumber)'
+      displayName: 'Set the buildVersion as PR number'
+      condition: ne(variables['Build.SourceBranch'], 'refs/heads/main')
+
+    - script: |
+        echo $(buildVersion)
+      displayName: Debugging
+
+    - script: echo '##vso[task.setvariable variable=buildVersion;isOutput=true]$(buildVersion)'
+      name: setVersion
+      displayName: 'Export the buildVersion for other jobs'
+      
+      
   - job: BuildApi
+    dependsOn: CalculateBuildVersion
     displayName: "Build api"
     pool:
       vmImage: $(vmImage)
-
+    variables:
+      buildVersion: $[ dependencies.CalculateBuildVersion.outputs['setVersion.buildVersion'] ]
+      repositoryName: 'user-management'
     steps:
-    - task: Docker@2
-      displayName: Build Docker Image
-      inputs:
-        command: build
-        dockerfile: $(dockerfilePath)
-        buildContext: $(Build.SourcesDirectory)
-
+  
     - script: dotnet test tests/UserManagement.UnitTests 
       displayName: Run Unit Tests
 
@@ -51,4 +87,28 @@ jobs:
         dockerComposeFile: $(dockerComposePath)
         action: 'Run a Docker Compose command'
         dockerComposeCommand: 'down'
+
+    - task: Docker@2
+      displayName: Build Docker Image
+      inputs:
+        command: build
+        repository: $(repositoryName)
+        dockerfile: $(dockerfilePath)
+        buildContext: $(Build.SourcesDirectory)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(buildVersion)
+        arguments: -t $(repositoryName)
+
+    - task: Docker@2
+      displayName: Push image to container registry
+      inputs:
+        command: push
+        repository: $(repositoryName)
+        dockerfile: $(dockerfilePath)
+        buildContext: $(Build.SourcesDirectory)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(buildVersion)
+      condition: eq(variables['Build.SourceBranch'], 'refs/heads/main') 
 
