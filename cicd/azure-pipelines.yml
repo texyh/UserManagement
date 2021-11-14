@@ -121,38 +121,38 @@ jobs:
       condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
 
     - task: HelmInstaller@1
-    displayName: Install Helm
-    inputs:
-      helmVersionToInstall: '3.0.2'
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+      displayName: Install Helm
+      inputs:
+        helmVersionToInstall: '3.0.2'
+      condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
 
     - task: AzureCLI@2
-    displayName: 'Add ACR repository'
-    inputs:
-      azureSubscription: 'Azure DevOps SP'
-      scriptType: 'bash'
-      scriptLocation: 'inlineScript'
+      displayName: 'Add ACR repository'
+      inputs:
+        azureSubscription: 'Azure DevOps SP'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
       inlineScript: az acr helm repo add --name $(registryName)
 
     - task: HelmDeploy@0
-    displayName: Pack the chart
-    inputs:
-      save: false
-      command: 'package'
-      updateDependency: true
-      chartPath: $(chartPath)
-      chartVersion: $(chartVersion)
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+      displayName: Pack the chart
+      inputs:
+        save: false
+        command: 'package'
+        updateDependency: true
+        chartPath: $(chartPath)
+        chartVersion: $(chartVersion)
+      condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
 
     - task: AzureCLI@2
-    displayName: 'Push the chart to ACR'
-    inputs:
-      azureSubscription: 'terraforms-service-connection'
-      scriptType: 'bash'
-      scriptLocation: 'inlineScript'
-      inlineScript: |
-        az configure --defaults acr=texyh
-        az acr helm repo add
-        az acr helm push $(Build.ArtifactStagingDirectory)/$(repositoryName)-$(chartVersion).tgz --force
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+      displayName: 'Push the chart to ACR'
+      inputs:
+        azureSubscription: 'terraforms-service-connection'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az configure --defaults acr=texyh
+          az acr helm repo add
+          az acr helm push $(Build.ArtifactStagingDirectory)/$(repositoryName)-$(chartVersion).tgz --force
+      condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
 
