@@ -30,6 +30,10 @@ jobs:
       displayName: "Set the build Version as SemVer"
       condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
 
+    - script: echo '##vso[task.setvariable variable=buildVersion]PR-$(System.PullRequest.PullRequestNumber)'
+      displayName: 'Set the buildVersion as PR number'
+      condition: ne(variables['Build.SourceBranch'], 'refs/heads/main')
+
     - script: |
         echo $(buildVersion)
       displayName: Debugging
