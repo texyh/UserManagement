@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System;
+using FluentValidation;
 using Marten;
 using Marten.Services.Events;
 using MediatR;
@@ -64,9 +65,15 @@ namespace UserManagement.Api
 
             return services;
         }
-        
+
         private static string GetConnectionString(IConfiguration configuration)
         {
+            Console.WriteLine("============== database ===============");
+            Console.WriteLine(configuration.GetValue<string>("POSTGRES_HOST", "ec2-23-21-186-85.compute-1.amazonaws.com"));
+            Console.WriteLine(configuration.GetValue<string>("POSTGRES_PORT", "5432"));
+            Console.WriteLine(configuration.GetValue<string>("POSTGRES_USERNAME", "fhzmnoqgvnyhyf"));
+            Console.WriteLine(configuration.GetValue<string>("POSTGRES_DB_NAME", "d7b8j75lpk5l8e"));
+
             var connectionStringBuilder = new NpgsqlConnectionStringBuilder
             {
                 Host = configuration.GetValue<string>("POSTGRES_HOST", "ec2-23-21-186-85.compute-1.amazonaws.com"),
