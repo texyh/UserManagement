@@ -151,7 +151,6 @@ jobs:
       condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
 
     - bash: |
-        az acr login --name texyh
         helm chart save $(chartPath) texyh.azurecr.io/charts/user-management:$(buildVersion)
         helm chart push texyh.azurecr.io/charts/user-management:$(buildVersion)
 
