@@ -132,7 +132,7 @@ jobs:
         azureSubscription: 'Azure DevOps SP'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
-      inlineScript: az acr helm repo add --name $(registryName)
+        inlineScript: az acr helm repo add --name $(registryName)
 
     - task: HelmDeploy@0
       displayName: Pack the chart
