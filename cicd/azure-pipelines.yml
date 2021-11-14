@@ -150,10 +150,6 @@ jobs:
           az acr helm push $(Build.ArtifactStagingDirectory)/$(repositoryName)-$(buildVersion).tgz --force
       condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
 
-    - bash: |
-        helm chart save $(chartPath) texyh.azurecr.io/charts/user-management:$(buildVersion)
-        helm chart push texyh.azurecr.io/charts/user-management:$(buildVersion)
-
   - job: Release
     dependsOn: [ CalculateBuildVersion, BuildApi ]
     pool:
