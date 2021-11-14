@@ -133,6 +133,7 @@ jobs:
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: az acr helm repo add --name $(registryName)
+      condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
 
     - task: HelmDeploy@0
       displayName: Pack the chart
