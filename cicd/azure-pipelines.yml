@@ -129,7 +129,7 @@ jobs:
     - task: AzureCLI@2
       displayName: 'Add ACR repository'
       inputs:
-        azureSubscription: 'Azure DevOps SP'
+        azureSubscription: 'terraforms-service-connection'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: az acr helm repo add --name $(registryName)
