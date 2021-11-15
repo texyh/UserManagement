@@ -38,6 +38,8 @@ namespace UserManagement.Api
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment environment, IServiceProvider serviceProvider)
         {
+            Console.WriteLine(System.Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
+
             app.UseHsts();
             
             var logger = serviceProvider.GetService<ILogger>();
