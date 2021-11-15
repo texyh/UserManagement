@@ -68,6 +68,7 @@ jobs:
       vmImage: $(vmImage)
     variables:
       buildVersion: $[ dependencies.CalculateBuildVersion.outputs['setVersion.buildVersion'] ]
+      chartVersion: $[ dependencies.CalculateBuildVersion.outputs['setVersion.chartVersion'] ]
       repositoryName: 'user-management'
     steps:
   
@@ -149,7 +150,7 @@ jobs:
         command: 'package'
         updateDependency: true
         chartPath: $(chartPath)
-        chartVersion: $(buildVersion)
+        chartVersion: $(chartVersion)
       condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
 
     - task: AzureCLI@2
@@ -161,7 +162,7 @@ jobs:
         inlineScript: |
           az configure --defaults acr=$(registryName)
           az acr helm repo add
-          az acr helm push $(Build.ArtifactStagingDirectory)/$(repositoryName)-$(buildVersion).tgz --force
+          az acr helm push $(Build.ArtifactStagingDirectory)/$(repositoryName)-$(chartVersion).tgz --force
       condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
 
   - job: Release
