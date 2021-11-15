@@ -49,9 +49,14 @@ jobs:
 
     - script: |
         sudo snap install yq --channel=v3/stable
-        echo "##vso[task.setvariable variable=chartVersion;isOutput=true]$(yq r $(chartPath)/Chart.yaml version)"
+        echo "##vso[task.setvariable variable=chartVersion;]$(yq r $(chartPath)/Chart.yaml version)"
       name: setChartVersion
       displayName: 'Parse chart version'
+
+    - script: |
+        echo "##vso[task.setvariable variable=chartVersion;isOutput=true]$(chartVersion)"
+      name: setChartVersion
+      displayName: 'export chart version for other jobs'
 
     - script: |
         echo $(chartVersion)
