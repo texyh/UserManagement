@@ -26,11 +26,6 @@ jobs:
       displayName: Determine Version
       condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
 
-    - script: |
-        echo $(GitVersion.SemVer)
-      displayName: 'Print Version'
-      condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
-
     - script: echo '##vso[task.setvariable variable=buildVersion]$(GitVersion.SemVer)'
       displayName: "Set the build Version as SemVer"
       condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
@@ -68,7 +63,7 @@ jobs:
       vmImage: $(vmImage)
     variables:
       buildVersion: $[ dependencies.CalculateBuildVersion.outputs['setVersion.buildVersion'] ]
-      chartVersion: $[ dependencies.CalculateBuildVersion.outputs['setVersion.chartVersion'] ]
+      chartVersion: $[ dependencies.CalculateBuildVersion.outputs['setChartVersion.chartVersion'] ]
       repositoryName: 'user-management'
     steps:
   
